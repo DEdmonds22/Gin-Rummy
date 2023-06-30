@@ -1,4 +1,4 @@
-* {
+*, *::after, *::before {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -12,9 +12,16 @@ header h1{
 header {
     margin-top: 50px;
 }
+
 img {
     width: 8%;
+    background-color: blue;
 }
+
+.users-deck img.turn, .main-deck img.turn {
+    cursor: pointer;
+}
+
 .game-board-container {
     display: flex;
     flex-direction: column;
@@ -31,4 +38,9 @@ img {
     margin: auto;   /*centers game-board div horizontal*/
     text-align: center; /*centers items horizontal*/
     border: 5px solid brown;
+}
+
+/*changes cursor of user cards - applied when it the user's turn*/
+.select {
+    cursor: pointer;
 }
