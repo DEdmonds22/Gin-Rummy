@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-header h1{
+header h1 {
     font-family: fantasy;
     font-size: 1.5em;
 }
@@ -13,19 +13,19 @@ header {
     margin-top: 50px;
 }
 
+/*computers and users imgs/cards*/
 img {
-    width: 8%;
-    background-color: blue;
+    width: 80%;
 }
 
-.users-deck img.turn, .main-deck img.turn {
-    cursor: pointer;
+.main img {
+    width: 8%;
 }
 
 .game-board-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;  /*vh refs to the viewport of the browser*/
+    height: 100vh;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -35,12 +35,24 @@ img {
     background-color: #91A637;
     flex-basis: 5px;
     width: 85%;
-    margin: auto;   /*centers game-board div horizontal*/
-    text-align: center; /*centers items horizontal*/
+    margin: auto;
+    text-align: center;
     border: 5px solid brown;
 }
 
-/*changes cursor of user cards - applied when it the user's turn*/
+#computers, #users {
+    display: flex;
+    justify-content: center;
+}
+
+/*changes cursor of user cards - applied when it's the user's turn*/
 .select {
     cursor: pointer;
 }
+
+/*
+.users img.turn,
+.main img.turn {
+    cursor: pointer;
+}
+*/

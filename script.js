@@ -1,9 +1,8 @@
-import Deck from "./deck.js"
+/*import Deck from "./deck.js"
 
 // creates brand new deck
 const deck = new Deck();
-deck.shuffle();
-console.log(deck.cards)
+console.log(deck.cards)*/
 
 /*  // start of user class and responsiveness
 // user cards
