@@ -1,7 +1,13 @@
-const section = document.querySelector(".main");
-const computer = document.getElementById("computers");
-const user = document.getElementById("users");
+// DOM elements
+const computers = document.getElementById("computers");
+const main = document.querySelector(".main");
+const discardPile = document.getElementById("discardPile");
+const users = document.getElementById("users");
 
+// global variables
+const pluckPile = [];
+
+// Functions
 // Generate the data
 const getData = () => [
     {imgSrc: "scr/playingcards/Clover_A.png", name: "cA"},
@@ -68,30 +74,39 @@ const randomize = () => {
 //Calls the randomize function, deals the inital 20 cards out
 const dealers = () => {
     const cardData = randomize();
-    const firstTwenty = [];
-    for (let i = 0; i < 20; i++) {
-        firstTwenty.push(cardData[i]);
+    const firstTwentyOne = [];
+    for (let i = 0; i < 21; i++) {
+        firstTwentyOne.push(cardData[i]);
     }
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 21; i++) {
         const card = document.createElement("div");
         const face = document.createElement("img");
         const back = document.createElement("div");
+        const backImg = document.createElement("img");
 
         card.classList.add = "card";
         face.classList.add = "face";
         back.classList.add = "back";
+        backImg.classList.add = "backImg";
 
-        face.src = firstTwenty[i].imgSrc
+        face.src = firstTwentyOne[i].imgSrc;
+        backImg.src = "scr/playingcards/Backing.png";
 
-        if (i % 2 === 0) {
-            computer.appendChild(card)
+        if (i === 20) {
+            discardPile.appendChild(card);
+            card.appendChild(face);
+            card.appendChild(back);
+        } else if (i % 2 === 0) {
+            users.appendChild(card)
             card.appendChild(face);
             card.appendChild(back);
         } else {
-            user.appendChild(card)
+            computers.appendChild(card)
             card.appendChild(face);
+            face.style.display = "none";
             card.appendChild(back);
+            back.appendChild(backImg);
         }
     }
 }

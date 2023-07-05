@@ -13,13 +13,40 @@ header {
     margin-top: 50px;
 }
 
+section {
+    display: flex;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 15%;
+    gap: 10px;
+}
+
+p {
+    position: relative;
+    right: 30%;
+    top: 50%;
+}
 /*computers and users imgs/cards*/
 img {
     width: 80%;
 }
 
-.main img {
-    width: 8%;
+.pluckPile {
+    width: 47%;
+}
+
+#discardPile {
+    width: 53%;
+}
+
+#discardPile .card,
+#discardPile img {
+    width: 100%;
 }
 
 .game-board-container {
@@ -43,6 +70,7 @@ img {
 #computers, #users {
     display: flex;
     justify-content: center;
+    margin: 10px;
 }
 
 /*changes cursor of user cards - applied when it's the user's turn*/
