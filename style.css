@@ -15,6 +15,8 @@ header {
 
 section {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .main {
@@ -26,16 +28,48 @@ section {
     gap: 10px;
 }
 
-p {
-    position: relative;
-    right: 30%;
-    top: 50%;
-}
-/*computers and users imgs/cards*/
-img {
-    width: 80%;
+/*PASS button*/
+.pass-btn {
+    position: absolute;
+    right: 35%;
+    border: 2px solid whitesmoke;
+    padding: 5px;
+    cursor: pointer;
 }
 
+.pass-btn:hover,
+#suit-btn:hover,
+#number-btn:hover {
+    color: yellow;
+}
+
+/*SORTING options*/
+.sorting-btns {
+    display: flex;
+    gap: 10px;
+    position: relative;
+    left: 10%;
+    visibility: hidden;
+}
+
+#suit-btn,
+#number-btn {
+    border: 2px solid whitesmoke;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#suit-btn.selected,
+#number-btn.selected {
+    color: goldenrod;
+    background-color: darkgreen;
+}
+
+/*computers and users imgs/cards*/
+img {
+    width: 100px;
+}
+/*
 .pluckPile {
     width: 47%;
 }
@@ -44,10 +78,14 @@ img {
     width: 53%;
 }
 
+#discardPile:hover {
+    background-color: yellow;
+}
+
 #discardPile .card,
 #discardPile img {
     width: 100%;
-}
+}*/
 
 .game-board-container {
     display: flex;
@@ -63,8 +101,11 @@ img {
     flex-basis: 5px;
     width: 85%;
     margin: auto;
-    text-align: center;
     border: 5px solid brown;
+}
+
+#discardPile {
+    cursor: pointer;
 }
 
 #computers, #users {
@@ -74,7 +115,7 @@ img {
 }
 
 /*changes cursor of user cards - applied when it's the user's turn*/
-.select {
+.selectable {
     cursor: pointer;
 }
 
