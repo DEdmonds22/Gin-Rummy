@@ -112,6 +112,7 @@ img {
     display: flex;
     justify-content: center;
     margin: 10px;
+    gap: 10px;
 }
 
 /*changes cursor of user cards - applied when it's the user's turn*/
@@ -125,3 +126,7 @@ img {
     cursor: pointer;
 }
 */
+.card.selected {
+    border: 20px solid red;
+  }
+  
