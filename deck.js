@@ -18,54 +18,54 @@ const winner = null;
 // Functions
 // Generate the data
 const getData = () => [
-    {imgSrc: "scr/playingcards/Clover_A.png", name: "c1", suit: "club", number: "01"},
-    {imgSrc: "scr/playingcards/Clover_2.png", name: "c2", suit: "club", number: "02"},
-    {imgSrc: "scr/playingcards/Clover_3.png", name: "c3", suit: "club", number: "03"},
-    {imgSrc: "scr/playingcards/Clover_4.png", name: "c4", suit: "club", number: "04"},
-    {imgSrc: "scr/playingcards/Clover_5.png", name: "c5", suit: "club", number: "05"},
-    {imgSrc: "scr/playingcards/Clover_6.png", name: "c6", suit: "club", number: "06"},
-    {imgSrc: "scr/playingcards/Clover_7.png", name: "c7", suit: "club", number: "07"},
-    {imgSrc: "scr/playingcards/Clover_8.png", name: "c8", suit: "club", number: "08"},
-    {imgSrc: "scr/playingcards/Clover_9.png", name: "c9", suit: "club", number: "09"},
+    {imgSrc: "scr/playingcards/Clover_A.png", name: "c1", suit: "club", number: "1"},
+    {imgSrc: "scr/playingcards/Clover_2.png", name: "c2", suit: "club", number: "2"},
+    {imgSrc: "scr/playingcards/Clover_3.png", name: "c3", suit: "club", number: "3"},
+    {imgSrc: "scr/playingcards/Clover_4.png", name: "c4", suit: "club", number: "4"},
+    {imgSrc: "scr/playingcards/Clover_5.png", name: "c5", suit: "club", number: "5"},
+    {imgSrc: "scr/playingcards/Clover_6.png", name: "c6", suit: "club", number: "6"},
+    {imgSrc: "scr/playingcards/Clover_7.png", name: "c7", suit: "club", number: "7"},
+    {imgSrc: "scr/playingcards/Clover_8.png", name: "c8", suit: "club", number: "8"},
+    {imgSrc: "scr/playingcards/Clover_9.png", name: "c9", suit: "club", number: "9"},
     {imgSrc: "scr/playingcards/Clover_10.png", name: "cb", suit: "club", number: "10"},
     {imgSrc: "scr/playingcards/Clover_J.png", name: "cc", suit: "club", number: "11"},
     {imgSrc: "scr/playingcards/Clover_Q.png", name: "cd", suit: "club", number: "12"},
     {imgSrc: "scr/playingcards/Clover_K.png", name: "ce", suit: "club", number: "13"},
-    {imgSrc: "scr/playingcards/Diamond_A.png", name: "d1", suit: "diamond", number: "01"},
-    {imgSrc: "scr/playingcards/Diamond_2.png", name: "d2", suit: "diamond", number: "02"},
-    {imgSrc: "scr/playingcards/Diamond_3.png", name: "d3", suit: "diamond", number: "03"},
-    {imgSrc: "scr/playingcards/Diamond_4.png", name: "d4", suit: "diamond", number: "04"},
-    {imgSrc: "scr/playingcards/Diamond_5.png", name: "d5", suit: "diamond", number: "05"},
-    {imgSrc: "scr/playingcards/Diamond_6.png", name: "d6", suit: "diamond", number: "06"},
-    {imgSrc: "scr/playingcards/Diamond_7.png", name: "d7", suit: "diamond", number: "07"},
-    {imgSrc: "scr/playingcards/Diamond_8.png", name: "d8", suit: "diamond", number: "08"},
-    {imgSrc: "scr/playingcards/Diamond_9.png", name: "d9", suit: "diamond", number: "09"},
+    {imgSrc: "scr/playingcards/Diamond_A.png", name: "d1", suit: "diamond", number: "1"},
+    {imgSrc: "scr/playingcards/Diamond_2.png", name: "d2", suit: "diamond", number: "2"},
+    {imgSrc: "scr/playingcards/Diamond_3.png", name: "d3", suit: "diamond", number: "3"},
+    {imgSrc: "scr/playingcards/Diamond_4.png", name: "d4", suit: "diamond", number: "4"},
+    {imgSrc: "scr/playingcards/Diamond_5.png", name: "d5", suit: "diamond", number: "5"},
+    {imgSrc: "scr/playingcards/Diamond_6.png", name: "d6", suit: "diamond", number: "6"},
+    {imgSrc: "scr/playingcards/Diamond_7.png", name: "d7", suit: "diamond", number: "7"},
+    {imgSrc: "scr/playingcards/Diamond_8.png", name: "d8", suit: "diamond", number: "8"},
+    {imgSrc: "scr/playingcards/Diamond_9.png", name: "d9", suit: "diamond", number: "9"},
     {imgSrc: "scr/playingcards/Diamond_10.png", name: "db", suit: "diamond", number: "10"},
     {imgSrc: "scr/playingcards/Diamond_J.png", name: "dc", suit: "diamond", number: "11"},
     {imgSrc: "scr/playingcards/Diamond_Q.png", name: "dd", suit: "diamond", number: "12"},
     {imgSrc: "scr/playingcards/Diamond_K.png", name: "de", suit: "diamond", number: "13"},
-    {imgSrc: "scr/playingcards/Heart_A.png", name: "h1", suit: "heart", number: "01"},
-    {imgSrc: "scr/playingcards/Heart_2.png", name: "h2", suit: "heart", number: "02"},
-    {imgSrc: "scr/playingcards/Heart_3.png", name: "h3", suit: "heart", number: "03"},
-    {imgSrc: "scr/playingcards/Heart_4.png", name: "h4", suit: "heart", number: "04"},
-    {imgSrc: "scr/playingcards/Heart_5.png", name: "h5", suit: "heart", number: "05"},
-    {imgSrc: "scr/playingcards/Heart_6.png", name: "h6", suit: "heart", number: "06"},
-    {imgSrc: "scr/playingcards/Heart_7.png", name: "h7", suit: "heart", number: "07"},
-    {imgSrc: "scr/playingcards/Heart_8.png", name: "h8", suit: "heart", number: "08"},
-    {imgSrc: "scr/playingcards/Heart_9.png", name: "h9", suit: "heart", number: "09"},
+    {imgSrc: "scr/playingcards/Heart_A.png", name: "h1", suit: "heart", number: "1"},
+    {imgSrc: "scr/playingcards/Heart_2.png", name: "h2", suit: "heart", number: "2"},
+    {imgSrc: "scr/playingcards/Heart_3.png", name: "h3", suit: "heart", number: "3"},
+    {imgSrc: "scr/playingcards/Heart_4.png", name: "h4", suit: "heart", number: "4"},
+    {imgSrc: "scr/playingcards/Heart_5.png", name: "h5", suit: "heart", number: "5"},
+    {imgSrc: "scr/playingcards/Heart_6.png", name: "h6", suit: "heart", number: "6"},
+    {imgSrc: "scr/playingcards/Heart_7.png", name: "h7", suit: "heart", number: "7"},
+    {imgSrc: "scr/playingcards/Heart_8.png", name: "h8", suit: "heart", number: "8"},
+    {imgSrc: "scr/playingcards/Heart_9.png", name: "h9", suit: "heart", number: "9"},
     {imgSrc: "scr/playingcards/Heart_10.png", name: "hb", suit: "heart", number: "10"},
     {imgSrc: "scr/playingcards/Heart_J.png", name: "hc", suit: "heart", number: "11"},
     {imgSrc: "scr/playingcards/Heart_Q.png", name: "hd", suit: "heart", number: "12"},
     {imgSrc: "scr/playingcards/Heart_K.png", name: "he", suit: "heart", number: "13"},
-    {imgSrc: "scr/playingcards/Spade_A.png", name: "s1", suit: "spade", number: "01"},
-    {imgSrc: "scr/playingcards/Spade_2.png", name: "s2", suit: "spade", number: "02"},
-    {imgSrc: "scr/playingcards/Spade_3.png", name: "s3", suit: "spade", number: "03"},
-    {imgSrc: "scr/playingcards/Spade_4.png", name: "s4", suit: "spade", number: "04"},
-    {imgSrc: "scr/playingcards/Spade_5.png", name: "s5", suit: "spade", number: "05"},
-    {imgSrc: "scr/playingcards/Spade_6.png", name: "s6", suit: "spade", number: "06"},
-    {imgSrc: "scr/playingcards/Spade_7.png", name: "s7", suit: "spade", number: "07"},
-    {imgSrc: "scr/playingcards/Spade_8.png", name: "s8", suit: "spade", number: "08"},
-    {imgSrc: "scr/playingcards/Spade_9.png", name: "s9", suit: "spade", number: "09"},
+    {imgSrc: "scr/playingcards/Spade_A.png", name: "s1", suit: "spade", number: "1"},
+    {imgSrc: "scr/playingcards/Spade_2.png", name: "s2", suit: "spade", number: "2"},
+    {imgSrc: "scr/playingcards/Spade_3.png", name: "s3", suit: "spade", number: "3"},
+    {imgSrc: "scr/playingcards/Spade_4.png", name: "s4", suit: "spade", number: "4"},
+    {imgSrc: "scr/playingcards/Spade_5.png", name: "s5", suit: "spade", number: "5"},
+    {imgSrc: "scr/playingcards/Spade_6.png", name: "s6", suit: "spade", number: "6"},
+    {imgSrc: "scr/playingcards/Spade_7.png", name: "s7", suit: "spade", number: "7"},
+    {imgSrc: "scr/playingcards/Spade_8.png", name: "s8", suit: "spade", number: "8"},
+    {imgSrc: "scr/playingcards/Spade_9.png", name: "s9", suit: "spade", number: "9"},
     {imgSrc: "scr/playingcards/Spade_10.png", name: "sb", suit: "spade", number: "10"},
     {imgSrc: "scr/playingcards/Spade_J.png", name: "sc", suit: "spade", number: "11"},
     {imgSrc: "scr/playingcards/Spade_Q.png", name: "sd", suit: "spade", number: "12"},
@@ -160,6 +160,12 @@ const discardPileFunction = function(event) {
             selectedCard = null;
         }
     });
+
+    usersDeck.forEach(card => {
+        card.style.cursor = "pointer";
+        console.log(card.dataset.number)
+    })
+    groups()
 }
 
 
@@ -192,9 +198,9 @@ numberBtn.addEventListener("click", () => {
     suitBtn.classList.remove("selected");
 
     usersDeck.sort((card1, card2) => {
-        const number1 = card1.dataset.number;
-        const number2 = card2.dataset.number;
-        return number1.localeCompare(number2);
+        const numberOne = card1.dataset.number;
+        const numberTwo = card2.dataset.number;
+        return numberOne.localeCompare(numberTwo);
     });
     users.innerHTML = "";
     usersDeck.forEach(card => users.appendChild(card));
@@ -222,10 +228,10 @@ usersDeck.forEach(card => {
       selectedCard.classList.remove = "selected";
       selectedCard = null;
     }
+
   });
 });
 
-// Function to swap two cards
 // Function to swap two cards
 function swapCards(card1, card2) {
     const parent1 = card1.parentNode;
@@ -243,4 +249,71 @@ function swapCards(card1, card2) {
     // Swap the positions in the array
     [usersDeck[index1], usersDeck[index2]] = [usersDeck[index2], usersDeck[index1]];
   }
-  
+
+  function groups() {
+    //check for suits and order
+    if ((usersDeck[0].dataset.suit === usersDeck[1].dataset.suit) && (usersDeck[1].dataset.suit === usersDeck[2].dataset.suit)) {
+        const suit = usersDeck[0].dataset.suit
+        const value = parseInt(usersDeck[0].dataset.number)
+
+        // searches the rest until the suit isnt the same
+        if ((parseInt(usersDeck[0].dataset.number) + 1 === parseInt(usersDeck[1].dataset.number)) && (parseInt(usersDeck[1].dataset.number) + 1 === parseInt(usersDeck[2].dataset.number))) {
+                for (let i = 0; i < 3; i++) {
+                    usersDeck[i].classList.add = "grouped";
+                    usersDeck[i].dataset.grouped = "thing";
+                }
+
+                if ((usersDeck[3].dataset.suit === suit) && (parseInt(usersDeck[3].dataset.number) === value + 3)) {
+                    usersDeck[3].classList.add = "grouped";
+                    usersDeck[3].dataset.grouped = "thing";
+
+                    if ((usersDeck[4].dataset.suit === suit) && (parseInt(usersDeck[4].dataset.number) === value + 4)) {
+                        usersDeck[4].classList.add = "grouped";
+                        usersDeck[4].dataset.grouped = "thing";
+
+                        if ((usersDeck[5].dataset.suit === suit) && (parseInt(usersDeck[5].dataset.number) === value + 5)) {
+                            usersDeck[5].classList.add = "grouped";
+                            usersDeck[5].dataset.grouped = "thing";
+
+                            if ((usersDeck[6].dataset.suit === suit) && (parseInt(usersDeck[6].dataset.number) === value + 6)) {
+                                usersDeck[6].classList.add = "grouped";
+                                usersDeck[6].dataset.grouped = "thing";
+
+                                if ((usersDeck[7].dataset.suit === suit) && (parseInt(usersDeck[7].dataset.number) === value + 7)) {
+                                    usersDeck[7].classList.add = "grouped";
+                                    usersDeck[7].dataset.grouped = "thing";
+                                    
+                                    if ((usersDeck[8].dataset.suit === suit) && (parseInt(usersDeck[8].dataset.number) === value + 8)) {
+                                        usersDeck[8].classList.add = "grouped";
+                                        usersDeck[8].dataset.grouped = "thing";
+
+                                        if ((usersDeck[9].dataset.suit === suit) && (parseInt(usersDeck[9].dataset.number) === value + 9)) {
+                                            usersDeck[9].classList.add = "grouped";
+                                            usersDeck[9].dataset.grouped = "thing";
+
+                                            if ((usersDeck[10].dataset.suit === suit) && (parseInt(usersDeck[10].dataset.number) === value + 10)) {
+                                                usersDeck[10].classList.add = "grouped";
+                                                usersDeck[10].dataset.grouped = "thing";
+                            
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+    } else {
+        console.log("didnt work")
+    }
+}
+
+
+
+/*
+    usersDeck[0].classList.add = "grouped";
+    usersDeck[0].dataset.dd = "thing";
+    console.log(usersDeck[0]);
+    parseInt(usersDeck[0].dataset.number)
+*/

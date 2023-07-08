@@ -126,7 +126,8 @@ img {
     cursor: pointer;
 }
 */
-.card.selected {
-    border: 20px solid red;
-  }
+[data-grouped="thing"] {
+    background-color: Gold;
+    padding: 3px;
+}
   
