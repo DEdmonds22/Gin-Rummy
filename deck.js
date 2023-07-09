@@ -7,13 +7,20 @@ const passBtn = document.querySelector(".pass-btn");
 const sortingBtns = document.querySelector(".sorting-btns");
 const suitBtn = document.getElementById("suit-btn");
 const numberBtn = document.getElementById("number-btn");
+const discardBtn = document.getElementById("discard-btn");
+const knockBtn = document.getElementById("knock-btn");
+const ginBtn = document.getElementById("gin-btn");
 
 // global variables
 const pluckPile = [];
 const computersDeck = [];
 let usersDeck = [];
-let usersDeadwood = null
-const turn = "user";
+let usersDeadwood = null;
+let computersDeadwood = null;
+let turn = "user";
+let userPassed = null;
+let numberOfRounds = 1;
+let roundWinner = null;
 const winner = null;
 let selectedCard = null;
 
@@ -138,8 +145,10 @@ for (let i = 0; i < usersD.length; i++) {
     usersDeck.push(usersD[i]);
 }
 
-
-// EVENT LISTENER
+//if it's computer's turn first ... 
+if (roundWinner === "computer"){
+    computersTurn();
+}
 
 // when discard pile is clicked
 const discardPileFunction = function(event) {
@@ -165,8 +174,9 @@ const discardPileFunction = function(event) {
 
     usersDeck.forEach(card => {
         card.style.cursor = "pointer";
-        console.log(card.dataset.number)
     })
+
+    discardBtn.style.visibility = "visible";
 }
 
 
@@ -174,15 +184,17 @@ discardPile.addEventListener("click", discardPileFunction);
 
 // when pass button is clicked
 passBtn.addEventListener("click", () => {
-    discardPile.removeEventListener("click", discardPileFunction)
     passBtn.style.display = "none";
+    userPassed = true;
+
     turn = "computer"
+    computerTurn();
 })
 
 // when suitBtn is clicked
 suitBtn.addEventListener("click", () => {
-    suitBtn.classList.add("selected");
-    numberBtn.classList.remove("selected");
+    suitBtn.classList.add("clicked");
+    numberBtn.classList.remove("clicked");
 
     usersDeck.sort((card1, card2) => {
         const name1 = card1.dataset.name;
@@ -191,12 +203,15 @@ suitBtn.addEventListener("click", () => {
     });
     users.innerHTML = "";
     usersDeck.forEach(card => users.appendChild(card));
+
+    removeGrouped()
+    pair()
 })
 
 // when numberbtn is clicked
 numberBtn.addEventListener("click", () => {
-    numberBtn.classList.add("selected");
-    suitBtn.classList.remove("selected");
+    numberBtn.classList.add("clicked");
+    suitBtn.classList.remove("clicked");
 
     usersDeck.sort((card1, card2) => {
         const numberOne = card1.dataset.number;
@@ -205,11 +220,30 @@ numberBtn.addEventListener("click", () => {
     });
     users.innerHTML = "";
     usersDeck.forEach(card => users.appendChild(card));
+
+    removeGrouped()
+    pair()
 })
 
+ginBtn.addEventListener("click", () => {
+    console.log("gin button clicked");
+});
 
-// Store the selected card
-//let selectedCard = null;
+knockBtn.addEventListener("click", () => {
+    console.log("knock button cllicked");
+})
+
+discardBtn.addEventListener("click", () => {
+    if (selectedCard === null) {
+        console.log("select a card first"); //prompt later stages 
+    } else {
+        discardPile.appendChild(selectedCard.parentNode);
+        discardBtn.style.visibility = "hidden"
+
+        turn = "computer"
+        computersTurn();
+    }
+})
 
 // Add click event listeners to each card
 usersDeck.forEach(card => {
@@ -231,6 +265,12 @@ usersDeck.forEach(card => {
 users.addEventListener("click", () => {
     removeGrouped()
     pair()
+
+    if (usersDeck.filter(card => card.hasAttribute("data-grouped")).length <= 1 && usersDeadwood <= 10) {
+        ginBtn.style.visibility = "visible";
+    } else if (usersDeadwood <= 10) {
+        knockBtn.style.visibility = "visible";
+    }
 })
 
 // Function to swap two cards
@@ -263,18 +303,389 @@ function removeGrouped() {
 function pair() { //place in while loop ?
     let deadwood = null
 
-    for (let i = 0; i < 11; i++) {    //cycles 11 times, each card, this runs for each card
+    //cycles 11 times, each card, this runs for each card
+    for (let i = 0; i < 11; i++) {
+
+        //skips card if already grouped
         if (usersDeck[i].hasAttribute("data-grouped") && usersDeck[i].getAttribute("data-grouped") === "thing"){
-            console.log("already grouped");
             continue
-        } else if  (    // first ignores same number, checks if 3 of the same suit
-            !(i >= 9) &&
-            usersDeck[i].dataset.suit === usersDeck[i + 1].dataset.suit &&
-            usersDeck[i].dataset.suit === usersDeck[i + 2].dataset.suit
-            ) {
+
+        // first ignores same number, checks if 3 of the same suit
+        } else if  (!(i >= 9) && usersDeck[i].dataset.suit === usersDeck[i + 1].dataset.suit && usersDeck[i].dataset.suit === usersDeck[i + 2].dataset.suit) {
             const suit = usersDeck[i].dataset.suit;
-            const value = parseInt(usersDeck[i].dataset.number);
+            const valueOne = parseInt(usersDeck[i].dataset.number);
+            const valueTwo = parseInt(usersDeck[i + 1].dataset.number);
+            const valueThree = parseInt(usersDeck[i +2].dataset.number);
             
+            // since suit is the same checks if card is a k - value 13 
+            if (valueOne === 13 && valueTwo === 1 && valueThree === 2) {
+                usersDeck[i].classList.add = "grouped";
+                usersDeck[i].dataset.grouped = "thing";
+                usersDeck[i + 1].classList.add = "grouped";
+                usersDeck[i + 1].dataset.grouped = "thing";
+                usersDeck[i + 2].classList.add = "grouped";
+                usersDeck[i + 2].dataset.grouped = "thing";
+
+                // checks next card and so on 
+                if (usersDeck[i + 3].dataset.suit === suit && parseInt(usersDeck[i + 3].dataset.number) === 3) {
+                    usersDeck[i + 3].classList.add = "grouped";
+                    usersDeck[i + 3].dataset.grouped = "thing";
+                    
+                    if (usersDeck[i + 4].dataset.suit === suit && parseInt(usersDeck[i + 4].dataset.number) === 4) {
+                        usersDeck[i + 4].classList.add = "grouped";
+                        usersDeck[i + 4].dataset.grouped = "thing";
+                        
+                        if (usersDeck[i + 5].dataset.suit === suit && parseInt(usersDeck[i + 5].dataset.number) === 5) {
+                            usersDeck[i + 5].classList.add = "grouped";
+                            usersDeck[i + 5].dataset.grouped = "thing";
+                            
+                            if (usersDeck[i + 6].dataset.suit === suit && parseInt(usersDeck[i + 6].dataset.number) === 6) {
+                                usersDeck[i + 6].classList.add = "grouped";
+                                usersDeck[i + 6].dataset.grouped = "thing";
+                                
+                                if (usersDeck[i + 7].dataset.suit === suit && parseInt(usersDeck[i + 7].dataset.number) === 7) {
+                                    usersDeck[i + 7].classList.add = "grouped";
+                                    usersDeck[i + 7].dataset.grouped = "thing";
+                                    
+                                    if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === 8) {
+                                        usersDeck[i + 8].classList.add = "grouped";
+                                        usersDeck[i + 8].dataset.grouped = "thing";
+                                        
+                                        if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 9) {
+                                            usersDeck[i + 9].classList.add = "grouped";
+                                            usersDeck[i + 9].dataset.grouped = "thing";
+                                            
+                                            if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 10) {
+                                                usersDeck[i + 10].classList.add = "grouped";
+                                                usersDeck[i + 10].dataset.grouped = "thing";
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            // since suit is the same, card isnt k, checks if the second card i+1 is k - value 13
+            } else if (valueOne === 12 && valueTwo === 13 && valueThree === 1) {
+                usersDeck[i].classList.add = "grouped";
+                usersDeck[i].dataset.grouped = "thing";
+                usersDeck[i + 1].classList.add = "grouped";
+                usersDeck[i + 1].dataset.grouped = "thing";
+                usersDeck[i + 2].classList.add = "grouped";
+                usersDeck[i + 2].dataset.grouped = "thing";
+
+                // checks next card and so on 
+                if (usersDeck[i + 3].dataset.suit === suit && parseInt(usersDeck[i + 3].dataset.number) === 2) {
+                    usersDeck[i + 3].classList.add = "grouped";
+                    usersDeck[i + 3].dataset.grouped = "thing";
+                    
+                    if (usersDeck[i + 4].dataset.suit === suit && parseInt(usersDeck[i + 4].dataset.number) === 3) {
+                        usersDeck[i + 4].classList.add = "grouped";
+                        usersDeck[i + 4].dataset.grouped = "thing";
+                        
+                        if (usersDeck[i + 5].dataset.suit === suit && parseInt(usersDeck[i + 5].dataset.number) === 4) {
+                            usersDeck[i + 5].classList.add = "grouped";
+                            usersDeck[i + 5].dataset.grouped = "thing";
+                            
+                            if (usersDeck[i + 6].dataset.suit === suit && parseInt(usersDeck[i + 6].dataset.number) === 5) {
+                                usersDeck[i + 6].classList.add = "grouped";
+                                usersDeck[i + 6].dataset.grouped = "thing";
+                                
+                                if (usersDeck[i + 7].dataset.suit === suit && parseInt(usersDeck[i + 7].dataset.number) === 6) {
+                                    usersDeck[i + 7].classList.add = "grouped";
+                                    usersDeck[i + 7].dataset.grouped = "thing";
+                                    
+                                    if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === 7) {
+                                        usersDeck[i + 8].classList.add = "grouped";
+                                        usersDeck[i + 8].dataset.grouped = "thing";
+                                        
+                                        if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 8) {
+                                            usersDeck[i + 9].classList.add = "grouped";
+                                            usersDeck[i + 9].dataset.grouped = "thing";
+                                            
+                                            if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 9) {
+                                                usersDeck[i + 10].classList.add = "grouped";
+                                                usersDeck[i + 10].dataset.grouped = "thing";
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            // since suit is the same, card and car i+1 isnt k, checks if the third card is k - value 13
+            } else if (valueOne === 11 && valueTwo == 12 && valueThree === 13) {
+                usersDeck[i].classList.add = "grouped";
+                usersDeck[i].dataset.grouped = "thing";
+                usersDeck[i + 1].classList.add = "grouped";
+                usersDeck[i + 1].dataset.grouped = "thing";
+                usersDeck[i + 2].classList.add = "grouped";
+                usersDeck[i + 2].dataset.grouped = "thing";
+
+                // checks next card and so on 
+                if (usersDeck[i + 3].dataset.suit === suit && parseInt(usersDeck[i + 3].dataset.number) === 1) {
+                    usersDeck[i + 3].classList.add = "grouped";
+                    usersDeck[i + 3].dataset.grouped = "thing";
+                    
+                    if (usersDeck[i + 4].dataset.suit === suit && parseInt(usersDeck[i + 4].dataset.number) === 2) {
+                        usersDeck[i + 4].classList.add = "grouped";
+                        usersDeck[i + 4].dataset.grouped = "thing";
+                        
+                        if (usersDeck[i + 5].dataset.suit === suit && parseInt(usersDeck[i + 5].dataset.number) === 3) {
+                            usersDeck[i + 5].classList.add = "grouped";
+                            usersDeck[i + 5].dataset.grouped = "thing";
+                            
+                            if (usersDeck[i + 6].dataset.suit === suit && parseInt(usersDeck[i + 6].dataset.number) === 4) {
+                                usersDeck[i + 6].classList.add = "grouped";
+                                usersDeck[i + 6].dataset.grouped = "thing";
+                                
+                                if (usersDeck[i + 7].dataset.suit === suit && parseInt(usersDeck[i + 7].dataset.number) === 5) {
+                                    usersDeck[i + 7].classList.add = "grouped";
+                                    usersDeck[i + 7].dataset.grouped = "thing";
+                                    
+                                    if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === 6) {
+                                        usersDeck[i + 8].classList.add = "grouped";
+                                        usersDeck[i + 8].dataset.grouped = "thing";
+                                        
+                                        if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 7) {
+                                            usersDeck[i + 9].classList.add = "grouped";
+                                            usersDeck[i + 9].dataset.grouped = "thing";
+                                            
+                                            if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 8) {
+                                                usersDeck[i + 10].classList.add = "grouped";
+                                                usersDeck[i + 10].dataset.grouped = "thing";
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }                
+
+            // since suits are the same, and none of the first selescted cards are k procceed as normal 
+            } else if (valueOne <= 10) {
+                if (valueOne + 1 === valueTwo && valueOne + 2 === valueThree) {
+                    usersDeck[i].classList.add = "grouped";
+                    usersDeck[i].dataset.grouped = "thing";
+                    usersDeck[i + 1].classList.add = "grouped";
+                    usersDeck[i + 1].dataset.grouped = "thing";
+                    usersDeck[i + 2].classList.add = "grouped";
+                    usersDeck[i + 2].dataset.grouped = "thing";
+    
+                    // checks next card and so on 
+                    if (usersDeck[i + 3].dataset.suit === suit && parseInt(usersDeck[i + 3].dataset.number) === valueOne + 3) {
+                        usersDeck[i + 3].classList.add = "grouped";
+                        usersDeck[i + 3].dataset.grouped = "thing";
+                        
+                        if (usersDeck[i + 4].dataset.suit === suit && parseInt(usersDeck[i + 4].dataset.number) === valueOne + 4) {
+                            usersDeck[i + 4].classList.add = "grouped";
+                            usersDeck[i + 4].dataset.grouped = "thing";
+                            
+                            if (usersDeck[i + 5].dataset.suit === suit && parseInt(usersDeck[i + 5].dataset.number) === valueOne + 5) {
+                                usersDeck[i + 5].classList.add = "grouped";
+                                usersDeck[i + 5].dataset.grouped = "thing";
+                                
+                                if (usersDeck[i + 6].dataset.suit === suit && parseInt(usersDeck[i + 6].dataset.number) === valueOne + 6) {
+                                    usersDeck[i + 6].classList.add = "grouped";
+                                    usersDeck[i + 6].dataset.grouped = "thing";
+                                    
+                                    if (usersDeck[i + 7].dataset.suit === suit && parseInt(usersDeck[i + 7].dataset.number) === valueOne + 7) {
+                                        usersDeck[i + 7].classList.add = "grouped";
+                                        usersDeck[i + 7].dataset.grouped = "thing";
+                                        
+                                        if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === valueOne + 8) {
+                                            usersDeck[i + 8].classList.add = "grouped";
+                                            usersDeck[i + 8].dataset.grouped = "thing";
+                                            
+                                            if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === valueOne + 9) {
+                                                usersDeck[i + 9].classList.add = "grouped";
+                                                usersDeck[i + 9].dataset.grouped = "thing";
+                                                
+                                                if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === valueOne + 10) {
+                                                    usersDeck[i + 10].classList.add = "grouped";
+                                                    usersDeck[i + 10].dataset.grouped = "thing";
+                                                    
+                                                }
+                                            } else if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 13 && valueOne + 9 === 13) {
+                                                usersDeck[i + 9].classList.add = "grouped";
+                                                usersDeck[i + 9].dataset.grouped = "thing";
+                                                if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 1) {
+                                                    usersDeck[i + 10].classList.add = "grouped";
+                                                    usersDeck[i + 10].dataset.grouped = "thing";
+
+                                                }                                               
+                                            }
+                                        } else if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === 13 && valueOne + 8 === 13) {
+                                            usersDeck[i + 8].classList.add = "grouped";
+                                            usersDeck[i + 8].dataset.grouped = "thing";
+                                            if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 1) {
+                                                usersDeck[i + 9].classList.add = "grouped";
+                                                usersDeck[i + 9].dataset.grouped = "thing";
+                                                
+                                                if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 2) {
+                                                    usersDeck[i + 10].classList.add = "grouped";
+                                                    usersDeck[i + 10].dataset.grouped = "thing";
+
+                                                }
+                                            }                                               
+                                        }
+                                    } else if (usersDeck[i + 7].dataset.suit === suit && parseInt(usersDeck[i + 7].dataset.number) === 13 && valueOne + 7 === 13) {
+                                        usersDeck[i + 7].classList.add = "grouped";
+                                        usersDeck[i + 7].dataset.grouped = "thing";
+                                        if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === 1) {
+                                            usersDeck[i + 8].classList.add = "grouped";
+                                            usersDeck[i + 8].dataset.grouped = "thing";
+                                            
+                                            if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 2) {
+                                                usersDeck[i + 9].classList.add = "grouped";
+                                                usersDeck[i + 9].dataset.grouped = "thing";
+                                                
+                                                if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 3) {
+                                                    usersDeck[i + 10].classList.add = "grouped";
+                                                    usersDeck[i + 10].dataset.grouped = "thing";
+                                                    
+                                                }
+                                            }
+                                        }                                               
+                                    }
+                                } else if (usersDeck[i + 6].dataset.suit === suit && parseInt(usersDeck[i + 6].dataset.number) === 13 && valueOne + 6 === 13) {
+                                    usersDeck[i + 6].classList.add = "grouped";
+                                    usersDeck[i + 6].dataset.grouped = "thing";
+                                    if (usersDeck[i + 7].dataset.suit === suit && parseInt(usersDeck[i + 7].dataset.number) === 1) {
+                                        usersDeck[i + 7].classList.add = "grouped";
+                                        usersDeck[i + 7].dataset.grouped = "thing";
+                                        
+                                        if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === 2) {
+                                            usersDeck[i + 8].classList.add = "grouped";
+                                            usersDeck[i + 8].dataset.grouped = "thing";
+                                            
+                                            if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 3) {
+                                                usersDeck[i + 9].classList.add = "grouped";
+                                                usersDeck[i + 9].dataset.grouped = "thing";
+                                                
+                                                if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 4) {
+                                                    usersDeck[i + 10].classList.add = "grouped";
+                                                    usersDeck[i + 10].dataset.grouped = "thing";
+
+                                                }
+                                            }
+                                        }
+                                    }                                                     
+                                }
+                            } else if (usersDeck[i + 5].dataset.suit === suit && parseInt(usersDeck[i + 5].dataset.number) === 13 && valueOne + 5 === 13) {
+                                usersDeck[i + 5].classList.add = "grouped";
+                                usersDeck[i + 5].dataset.grouped = "thing";
+                                if (usersDeck[i + 6].dataset.suit === suit && parseInt(usersDeck[i + 6].dataset.number) === 1) {
+                                    usersDeck[i + 6].classList.add = "grouped";
+                                    usersDeck[i + 6].dataset.grouped = "thing";
+                                    
+                                    if (usersDeck[i + 7].dataset.suit === suit && parseInt(usersDeck[i + 7].dataset.number) === 2) {
+                                        usersDeck[i + 7].classList.add = "grouped";
+                                        usersDeck[i + 7].dataset.grouped = "thing";
+                                        
+                                        if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === 3) {
+                                            usersDeck[i + 8].classList.add = "grouped";
+                                            usersDeck[i + 8].dataset.grouped = "thing";
+                                            
+                                            if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 4) {
+                                                usersDeck[i + 9].classList.add = "grouped";
+                                                usersDeck[i + 9].dataset.grouped = "thing";
+                                                
+                                                if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 5) {
+                                                    usersDeck[i + 10].classList.add = "grouped";
+                                                    usersDeck[i + 10].dataset.grouped = "thing";
+                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                }                                              
+                            }
+                        } else if (usersDeck[i + 4].dataset.suit === suit && parseInt(usersDeck[i + 4].dataset.number) === 13 && valueOne + 4 === 13) {
+                            usersDeck[i + 4].classList.add = "grouped";
+                            usersDeck[i + 4].dataset.grouped = "thing";
+                            if (usersDeck[i + 5].dataset.suit === suit && parseInt(usersDeck[i + 5].dataset.number) === 1) {
+                                usersDeck[i + 5].classList.add = "grouped";
+                                usersDeck[i + 5].dataset.grouped = "thing";
+                                
+                                if (usersDeck[i + 6].dataset.suit === suit && parseInt(usersDeck[i + 6].dataset.number) === 2) {
+                                    usersDeck[i + 6].classList.add = "grouped";
+                                    usersDeck[i + 6].dataset.grouped = "thing";
+                                    
+                                    if (usersDeck[i + 7].dataset.suit === suit && parseInt(usersDeck[i + 7].dataset.number) === 3) {
+                                        usersDeck[i + 7].classList.add = "grouped";
+                                        usersDeck[i + 7].dataset.grouped = "thing";
+                                        
+                                        if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === 4) {
+                                            usersDeck[i + 8].classList.add = "grouped";
+                                            usersDeck[i + 8].dataset.grouped = "thing";
+                                            
+                                            if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 5) {
+                                                usersDeck[i + 9].classList.add = "grouped";
+                                                usersDeck[i + 9].dataset.grouped = "thing";
+                                                
+                                                if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 6) {
+                                                    usersDeck[i + 10].classList.add = "grouped";
+                                                    usersDeck[i + 10].dataset.grouped = "thing";
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }                                          
+                        }
+                    // any of the follow up cards = 12 ...
+                    } else if (usersDeck[i + 3].dataset.suit === suit && parseInt(usersDeck[i + 3].dataset.number) === 13 && valueOne + 3 === 13) {
+                        usersDeck[i + 3].classList.add = "grouped";
+                        usersDeck[i + 3].dataset.grouped = "thing";
+                        if (usersDeck[i + 4].dataset.suit === suit && parseInt(usersDeck[i + 4].dataset.number) === 1) {
+                            usersDeck[i + 4].classList.add = "grouped";
+                            usersDeck[i + 4].dataset.grouped = "thing";
+                            
+                            if (usersDeck[i + 5].dataset.suit === suit && parseInt(usersDeck[i + 5].dataset.number) === 2) {
+                                usersDeck[i + 5].classList.add = "grouped";
+                                usersDeck[i + 5].dataset.grouped = "thing";
+                                
+                                if (usersDeck[i + 6].dataset.suit === suit && parseInt(usersDeck[i + 6].dataset.number) === 3) {
+                                    usersDeck[i + 6].classList.add = "grouped";
+                                    usersDeck[i + 6].dataset.grouped = "thing";
+                                    
+                                    if (usersDeck[i + 7].dataset.suit === suit && parseInt(usersDeck[i + 7].dataset.number) === 4) {
+                                        usersDeck[i + 7].classList.add = "grouped";
+                                        usersDeck[i + 7].dataset.grouped = "thing";
+                                        
+                                        if (usersDeck[i + 8].dataset.suit === suit && parseInt(usersDeck[i + 8].dataset.number) === 5) {
+                                            usersDeck[i + 8].classList.add = "grouped";
+                                            usersDeck[i + 8].dataset.grouped = "thing";
+                                            
+                                            if (usersDeck[i + 9].dataset.suit === suit && parseInt(usersDeck[i + 9].dataset.number) === 6) {
+                                                usersDeck[i + 9].classList.add = "grouped";
+                                                usersDeck[i + 9].dataset.grouped = "thing";
+                                                
+                                                if (usersDeck[i + 10].dataset.suit === suit && parseInt(usersDeck[i + 10].dataset.number) === 7) {
+                                                    usersDeck[i + 10].classList.add = "grouped";
+                                                    usersDeck[i + 10].dataset.grouped = "thing";
+                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }               
+                    }
+                }
+            }
+        
+        //ignores suit, checks if same number
+        } else if (!(i >= 9) && parseInt(usersDeck[i].dataset.number) === parseInt(usersDeck[i + 1].dataset.number) && parseInt(usersDeck[i].dataset.number) === parseInt(usersDeck[i + 2].dataset.number)) {
             usersDeck[i].classList.add = "grouped";
             usersDeck[i].dataset.grouped = "thing";
             usersDeck[i + 1].classList.add = "grouped";
@@ -282,18 +693,10 @@ function pair() { //place in while loop ?
             usersDeck[i + 2].classList.add = "grouped";
             usersDeck[i + 2].dataset.grouped = "thing";
 
-            if (
-                usersDeck[i].dataset.suit === usersDeck[i + 1].dataset.suit &&
-                usersDeck[i].dataset.suit === usersDeck[i + 2].dataset.suit
-            ) {
-
+            if (parseInt(usersDeck[i + 3].dataset.number) === parseInt(usersDeck[i].dataset.number)) {
+                usersDeck[i + 3].classList.add = "grouped";
+                usersDeck[i + 3].dataset.grouped = "thing";
             }
-        } else if (     //ignores suit, checks if same number
-            !(i >= 9) &&
-            usersDeck[i].dataset.number === usersDeck[i + 1].dataset.number &&
-            usersDeck[i].dataset.number === usersDeck[i + 2].dataset.number
-            ) {   //if same number
-                console.log("same number")
         } else {
             deadwood += parseInt(usersDeck[i].dataset.number)
         }
@@ -303,9 +706,102 @@ function pair() { //place in while loop ?
 }
 
 
-/*
-    usersDeck[10].classList.add = "grouped";
-    usersDeck[10].dataset.grouped = "thing";
-    console.log(usersDeck[0]);
-    parseInt(usersDeck[0].dataset.number)
-*/
+// COMPUTER'S LOGIC
+let choicesToDiscard = [];
+
+const computersTurn = () => {
+    discardPile.removeEventListener("click", discardPileFunction)   //no effect when user clicks on discardPile
+    discardBtn.style.visibility = "hidden";
+    knockBtn.style.visibility = "hidden";
+    ginBtn.style.visibility = "hidden";
+
+    grabFromDiscardPile();
+
+    const computersD = Array.from(computers.querySelectorAll("img"));
+
+    for (let i = 0; i < computersD.length; i++) {
+        if (computersD[i].hasAttribute("data-number")){
+            computersDeck.push(computersD[i]);
+        }
+    }
+
+    pairTheNumbers();
+
+    findOutliers();
+    console.log()
+
+    if (choicesToDiscard.length > 0){
+        toMoveToDiscardPile = null
+        computersDeck.forEach(card => {
+            if (card.dataset.name === choicesToDiscard[0].dataset.name){
+                toMoveToDiscardPile = card
+            }
+        });
+        let omgosh = toMoveToDiscardPile.nextSibling.querySelector("img")
+        console.log(omgosh)
+        toMoveToDiscardPile.nextSibling.removeChild(omgosh)
+
+        toMoveToDiscardPile.style.display = "block";
+        discardPile.appendChild(toMoveToDiscardPile)
+    };
+
+    /*
+    if (computersDeadwood <= 5) {
+        if (choicesToDiscard.length > 0){
+            computers.forEach()
+        }
+        game ()
+    } else {
+
+    }*/
+
+}
+
+// COMPUTERS FUNCTIONS
+const grabFromDiscardPile = () => {
+    passBtn.style.display = "none";
+    const card = discardPile.firstChild
+    card.firstChild.style.display = "none";
+
+    const backImg = document.createElement("img");
+    backImg.classList.add = "backImg";
+    backImg.src = "scr/playingcards/Backing.png";
+
+    card.lastChild.appendChild(backImg)
+    computers.appendChild(card);
+}
+
+const pairTheNumbers = () => {
+    let deadwood = null;
+
+    for (let i = 0; i < computersDeck.length; i++) {
+        const currentCard = computersDeck[i];
+        const number = currentCard.dataset.number;
+      
+        // Count the occurrences of the current card's number in the array
+        const occurrences = computersDeck.filter(card => card.dataset.number === number).length;
+      
+        if (occurrences >= 4) {
+          currentCard.classList.add = "grouped";
+          currentCard.dataset.grouped = "noGlow";
+          console.log(number, currentCard)
+        } else {
+            deadwood += parseInt(number);
+        }
+    }
+    computersDeadwood = deadwood;
+};
+
+const findOutliers = () => {
+    const outliers = computersDeck.filter(card => !card.hasAttribute("data-grouped"));
+    const repLessThanTwice = outliers.filter(card => {
+        const number = card.dataset.number;
+        const count = computersDeck.filter(c => c.dataset.number === number).length;
+        return count < 2;
+      });
+    
+    repLessThanTwice.forEach(choice => {
+        choicesToDiscard.push(choice);
+    })
+};
+  

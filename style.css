@@ -43,7 +43,12 @@ section {
     color: yellow;
 }
 
-/*SORTING options*/
+/*BTNS options*/
+#btns {
+    display: flex;
+    gap: 60px
+}
+
 .sorting-btns {
     display: flex;
     gap: 10px;
@@ -51,16 +56,31 @@ section {
     left: 10%;
     visibility: hidden;
 }
+.selections {
+    display: flex;
+    gap: 10px;
+    position: relative;
+    left: 10%;
+}
+
+#discard-btn,
+#knock-btn,
+#gin-btn {
+    visibility: hidden;
+}
 
 #suit-btn,
-#number-btn {
+#number-btn,
+#discard-btn,
+#knock-btn,
+#gin-btn {
     border: 2px solid whitesmoke;
     padding: 5px;
     cursor: pointer;
 }
 
-#suit-btn.selected,
-#number-btn.selected {
+#suit-btn.clicked,
+#number-btn.clicked {
     color: goldenrod;
     background-color: darkgreen;
 }
