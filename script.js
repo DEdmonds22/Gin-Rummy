@@ -10,6 +10,7 @@ const discardBtn = document.getElementById("discard-btn");
 const knockBtn = document.getElementById("knock-btn");
 const ginBtn = document.getElementById("gin-btn");
 const usersDeckSection = document.getElementById("users-deck-section");
+const scoreBoardContainer = document.getElementById("scoreBoardContainer");
 /*
  computersDeckSection - div element
  mainSection - div element
@@ -221,12 +222,16 @@ const discardPileFunction = event => {
     discardBtn.style.display = "";  /* shows discard btn */
     pluckingPile.removeEventListener("click",pluckingPileFunction);
     discardPile.removeEventListener("click", discardPileFunction);
+    ginBtn.style.display = "";
+
 }
 
 const passBtnFunction = () => {
     passBtn.style.display = "none";
     sortingBtns.style.display = "none"
     computersTurn();
+    ginBtn.style.display = "";
+
 }
 
 const suitBtnFunction = () => {
@@ -264,7 +269,7 @@ const numberBtnFunction = () => {
 }
 
 const ginBtnFunction = () => {
-    console.log("gin btn");
+    scoreBoardContainer.style.display = "";
     // triggers game() + 25 pts
 }
 
@@ -351,6 +356,8 @@ sortingBtns.style.display = "none";
 discardBtn.style.display = "none";
 knockBtn.style.display = "none";
 ginBtn.style.display = "none";
+scoreBoardContainer.style.display = "none";
+
 
 // EVENT LISTENERS 
 // user clicks pluckingPile
