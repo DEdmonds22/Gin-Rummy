@@ -4,22 +4,52 @@
     box-sizing: border-box;
 }
 
+/*GAME-BOARD-CONTAINER id*/
+#game-board-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/*HEADER tag*/
+header {
+    margin-top: 50px;
+}
+
 header h1 {
     font-family: fantasy;
     font-size: 1.5em;
 }
 
-header {
-    margin-top: 50px;
+/*GAME-BOARD id*/
+#game-board {
+    background-color: #91A637;
+    flex-basis: 5px;
+    width: 85%;
+    margin: auto;
+    border: 5px solid brown;
 }
 
+/*COMPUTERS-DECK-SECTION id & USERS-DECK-SECTION id*/
+#computers-deck-section, #users-deck-section {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    gap: 10px;
+}
+
+/*SECTION tag*/
 section {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.main {
+/*MAIN-SECTION id*/
+#main-section {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,8 +58,27 @@ section {
     gap: 10px;
 }
 
-/*PASS button*/
-.pass-btn {
+/*DISCARD-PILE id*/
+#discardPile {
+    cursor: pointer;
+}
+
+/*BTNS id*/
+#btns {
+    display: flex;
+    gap: 60px
+}
+
+/*SELECTIONS id*/
+#selections {
+    display: flex;
+    gap: 10px;
+    position: relative;
+    left: 10%;
+}
+
+/*BUTTON RELATED*/
+#pass-btn {
     position: absolute;
     right: 35%;
     border: 2px solid whitesmoke;
@@ -37,36 +86,17 @@ section {
     cursor: pointer;
 }
 
-.pass-btn:hover,
+#pass-btn:hover,
 #suit-btn:hover,
 #number-btn:hover {
     color: yellow;
 }
 
-/*BTNS options*/
-#btns {
-    display: flex;
-    gap: 60px
-}
-
-.sorting-btns {
+#sorting-btns {
     display: flex;
     gap: 10px;
     position: relative;
     left: 10%;
-    visibility: hidden;
-}
-.selections {
-    display: flex;
-    gap: 10px;
-    position: relative;
-    left: 10%;
-}
-
-#discard-btn,
-#knock-btn,
-#gin-btn {
-    visibility: hidden;
 }
 
 #suit-btn,
@@ -85,69 +115,12 @@ section {
     background-color: darkgreen;
 }
 
-/*computers and users imgs/cards*/
+/*imgs*/
 img {
     width: 100px;
 }
-/*
-.pluckPile {
-    width: 47%;
-}
 
-#discardPile {
-    width: 53%;
-}
-
-#discardPile:hover {
-    background-color: yellow;
-}
-
-#discardPile .card,
-#discardPile img {
-    width: 100%;
-}*/
-
-.game-board-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.game-board {
-    background-color: #91A637;
-    flex-basis: 5px;
-    width: 85%;
-    margin: auto;
-    border: 5px solid brown;
-}
-
-#discardPile {
-    cursor: pointer;
-}
-
-#computers, #users {
-    display: flex;
-    justify-content: center;
-    margin: 10px;
-    gap: 10px;
-}
-
-/*changes cursor of user cards - applied when it's the user's turn*/
-.selectable {
-    cursor: pointer;
-}
-
-/*
-.users img.turn,
-.main img.turn {
-    cursor: pointer;
-}
-*/
 [data-grouped="thing"] {
     background-color: Gold;
     padding: 3px;
 }
-  

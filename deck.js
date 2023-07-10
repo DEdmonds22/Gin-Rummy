@@ -1,6 +1,7 @@
 // DOM elements
 const computers = document.getElementById("computers");
 const main = document.querySelector(".main");
+const pluckPile = document.getElementById("pluckPile");
 const discardPile = document.getElementById("discardPile");
 const users = document.getElementById("users");
 const passBtn = document.querySelector(".pass-btn");
@@ -12,13 +13,12 @@ const knockBtn = document.getElementById("knock-btn");
 const ginBtn = document.getElementById("gin-btn");
 
 // global variables
-const pluckPile = [];
+let shuffledPluckPileArray = [];
+let shuffledPluckPile = [];
 const computersDeck = [];
 let usersDeck = [];
 let usersDeadwood = null;
 let computersDeadwood = null;
-let turn = "user";
-let userPassed = null;
 let numberOfRounds = 1;
 let roundWinner = null;
 const winner = null;
@@ -95,7 +95,11 @@ const dealers = () => {
     for (let i = 0; i < 21; i++) {
         const firstElement = cardData.shift();
         firstTwentyOne.push(firstElement);
-    }
+    };
+/*
+    for (let i = 0; i < cardData.length; i++) {
+
+    };*/
 
     for (let i = 0; i < 21; i++) {
         const card = document.createElement("div");
@@ -133,22 +137,74 @@ const dealers = () => {
             card.appendChild(back);
             back.appendChild(backImg);
 
+        };
+    };
+    console.log(cardData)
+    shuffledPluckPileArray.push(cardData);
+}
+
+const cardCreation = () => {
+    const card = document.createElement("div");
+    const face = document.createElement("img");
+    const back = document.createElement("div");
+    const backImg = document.createElement("img");
+
+    card.classList.add = "card";
+    face.classList.add = "face";
+    face.classList.add = "name";
+    face.classList.add = "suit";
+    face.classList.add = "number";
+    back.classList.add = "back";
+    backImg.classList.add = "backImg";
+
+    card.dataset.card = "card";
+    face.src = shuffledPluckPile[0].imgSrc;
+    face.dataset.name = shuffledPluckPile[0].name;
+    face.dataset.suit = shuffledPluckPile[0].suit;
+    face.dataset.number = shuffledPluckPile[0].number;
+    backImg.src = "scr/playingcards/Backing.png";
+
+    users.appendChild(card)
+    card.appendChild(face);
+    card.appendChild(back);
+
+    card.addEventListener('click', function() {
+        // Handle click event for the new card
+        if (!selectedCard) {
+            // If no card is currently selected, store the clicked card
+            selectedCard = card;
+            selectedCard.classList.add = 'selected';
+        } else {
+            // If another card is already selected, swap the positions
+            swapCards(selectedCard, card);
+            selectedCard.classList.remove = 'selected';
+            selectedCard = null;
         }
-    }
-    pluckPile.push(cardData);
+        
+    });
+
+    usersDeck.push(face)
+
+    usersDeck.forEach(card => {
+        card.style.cursor = "pointer";
+    })
+
+    discardBtn.style.visibility = "visible";
+    passBtn.style.display = "none";
+    sortingBtns.style.visibility = "visible";
 }
 
 dealers()
 
+// converts the array into something accessible/manipulitable
 const usersD = Array.from(users.querySelectorAll("img"));
 for (let i = 0; i < usersD.length; i++) {
     usersDeck.push(usersD[i]);
 }
 
-//if it's computer's turn first ... 
-if (roundWinner === "computer"){
-    computersTurn();
-}
+shuffledPluckPileArray[0].forEach(card => {
+    shuffledPluckPile.push(card);
+})
 
 // when discard pile is clicked
 const discardPileFunction = function(event) {
@@ -157,7 +213,7 @@ const discardPileFunction = function(event) {
     sortingBtns.style.visibility = "visible";
     users.appendChild(parentDiv);
     usersDeck.push(event.target);
-
+/*
     parentDiv.addEventListener('click', function() {
         // Handle click event for the new card
         if (!selectedCard) {
@@ -174,20 +230,37 @@ const discardPileFunction = function(event) {
 
     usersDeck.forEach(card => {
         card.style.cursor = "pointer";
-    })
+    })*/
 
     discardBtn.style.visibility = "visible";
+    discardPile.removeEventListener("click", discardPileFunction);
+    pluckPile.removeEventListener("click", pluckPileFunction);
 }
 
-
+// when discardPile is clicked
 discardPile.addEventListener("click", discardPileFunction);
+
+// when pluckPile ic clicked
+// Define the event listener function separately
+const pluckPileFunction = () => {
+    cardCreation();
+    shuffledPluckPile.shift();
+  
+    discardPile.removeEventListener("click", discardPileFunction);
+    pluckPile.removeEventListener("click", pluckPileFunction);
+
+};
+  
+  // Add the event listener
+pluckPile.addEventListener("click", pluckPileFunction);
+
+  
 
 // when pass button is clicked
 passBtn.addEventListener("click", () => {
     passBtn.style.display = "none";
     userPassed = true;
 
-    turn = "computer"
     computerTurn();
 })
 
@@ -238,7 +311,9 @@ discardBtn.addEventListener("click", () => {
         console.log("select a card first"); //prompt later stages 
     } else {
         discardPile.appendChild(selectedCard.parentNode);
-        discardBtn.style.visibility = "hidden"
+        discardBtn.style.visibility = "hidden";
+        selectedCard.classList.remove = 'selected'
+        removeGrouped()
 
         turn = "computer"
         computersTurn();
@@ -249,10 +324,12 @@ discardBtn.addEventListener("click", () => {
 usersDeck.forEach(card => {
   card.addEventListener('click', function(event) {
     const clickedCard = event.target
+    console.log("clicked usersdeck card")
     if (!selectedCard) {
       // If no card is currently selected, store the clicked card
       selectedCard = clickedCard;
       selectedCard.classList.add = "selected";
+      console.log("selected card")
     } else {
       // If another card is already selected, swap the positions
       swapCards(selectedCard, clickedCard);
@@ -263,6 +340,7 @@ usersDeck.forEach(card => {
 });
 
 users.addEventListener("click", () => {
+    console.log("clicked users")
     removeGrouped()
     pair()
 
@@ -311,7 +389,7 @@ function pair() { //place in while loop ?
             continue
 
         // first ignores same number, checks if 3 of the same suit
-        } else if  (!(i >= 9) && usersDeck[i].dataset.suit === usersDeck[i + 1].dataset.suit && usersDeck[i].dataset.suit === usersDeck[i + 2].dataset.suit) {
+        } else if  (!(i >= 9) && (usersDeck[i].dataset.suit === usersDeck[i + 1].dataset.suit) && (usersDeck[i].dataset.suit === usersDeck[i + 2].dataset.suit)) {
             const suit = usersDeck[i].dataset.suit;
             const valueOne = parseInt(usersDeck[i].dataset.number);
             const valueTwo = parseInt(usersDeck[i + 1].dataset.number);
@@ -711,11 +789,10 @@ let choicesToDiscard = [];
 
 const computersTurn = () => {
     discardPile.removeEventListener("click", discardPileFunction)   //no effect when user clicks on discardPile
+    pluckPile.removeEventListener("click", pluckPileFunction);
     discardBtn.style.visibility = "hidden";
     knockBtn.style.visibility = "hidden";
     ginBtn.style.visibility = "hidden";
-
-    grabFromDiscardPile();
 
     const computersD = Array.from(computers.querySelectorAll("img"));
 
@@ -725,24 +802,39 @@ const computersTurn = () => {
         }
     }
 
+    grabFromDiscardPile();
+
+
     pairTheNumbers();
 
     findOutliers();
-    console.log()
 
+    console.log(choicesToDiscard)
     if (choicesToDiscard.length > 0){
-        toMoveToDiscardPile = null
+        let toMoveToDiscardPile = null
         computersDeck.forEach(card => {
             if (card.dataset.name === choicesToDiscard[0].dataset.name){
                 toMoveToDiscardPile = card
             }
         });
+
         let omgosh = toMoveToDiscardPile.nextSibling.querySelector("img")
-        console.log(omgosh)
         toMoveToDiscardPile.nextSibling.removeChild(omgosh)
 
+        const card = document.createElement("div");
+        card.classList.add = "card";
+        card.dataset.card = "card";
+
+        const back = document.createElement("div");
+        back.classList.add = "back";
+
+        card.appendChild(toMoveToDiscardPile);
+        card.appendChild(back);
+
         toMoveToDiscardPile.style.display = "block";
-        discardPile.appendChild(toMoveToDiscardPile)
+        discardPile.appendChild(card);
+        console.log(toMoveToDiscardPile)
+        console.log(card)
     };
 
     /*
@@ -755,6 +847,10 @@ const computersTurn = () => {
 
     }*/
 
+    turn = "user";
+    numberOfRounds += 1;
+    discardPile.addEventListener("click", discardPileFunction);
+    pluckPile.addEventListener("click", pluckPileFunction);
 }
 
 // COMPUTERS FUNCTIONS
@@ -762,6 +858,8 @@ const grabFromDiscardPile = () => {
     passBtn.style.display = "none";
     const card = discardPile.firstChild
     card.firstChild.style.display = "none";
+    console.log(card)
+    console.log(card.firstChild)
 
     const backImg = document.createElement("img");
     backImg.classList.add = "backImg";
@@ -777,14 +875,12 @@ const pairTheNumbers = () => {
     for (let i = 0; i < computersDeck.length; i++) {
         const currentCard = computersDeck[i];
         const number = currentCard.dataset.number;
-      
         // Count the occurrences of the current card's number in the array
         const occurrences = computersDeck.filter(card => card.dataset.number === number).length;
       
-        if (occurrences >= 4) {
-          currentCard.classList.add = "grouped";
-          currentCard.dataset.grouped = "noGlow";
-          console.log(number, currentCard)
+        if (occurrences >= 3) {
+            currentCard.classList.add = "grouped";
+            currentCard.dataset.grouped = "thing";
         } else {
             deadwood += parseInt(number);
         }
@@ -802,6 +898,7 @@ const findOutliers = () => {
     
     repLessThanTwice.forEach(choice => {
         choicesToDiscard.push(choice);
+        console.log(choice)
     })
 };
   

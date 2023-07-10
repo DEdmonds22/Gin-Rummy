@@ -4,43 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script defer src="/deck.js"></script>
-    <title>Rummy 500</title>
+    <script defer src="script.js"></script>
+    <title>Gin Rummy</title>
 </head>
 <body>
-    <div class="game-board-container">
+    <div id="game-board-container">
         <header>
             <h1>Rummy Gin</h1>
         </header>
-    
-        <div class="game-board">
 
-            <div id="computers">
-            </div>
-            
+        <div id="game-board">
+
+            <div id="computers-deck-section"></div>
+
             <section>
-                <div class="main">
-                    <img src="scr/playingcards/Backing.png" class="pluckPile" alt="">
-                    <div id="discardPile" class="button"></div>
+                <div id="main-section">
+                    <img src="scr/playingcards/Backing.png" id="plucking-pile">
+                    <div id="discard-pile"></div>
                 </div>
-                <p class="pass-btn">PASS</p>
+                <p id="pass-btn">PASS</p>
             </section>
-            
+
             <div id="btns">
-                <div class="sorting-btns">
+                <div id="sorting-btns">
                     <p id="suit-btn">SUIT</p>
                     <p id="number-btn">NUMBER</p>
                 </div>
-                <div class="selections">
+
+                <div id="selections">
                     <p id="discard-btn">DISCARD</p>
                     <p id="knock-btn">KNOCK</p>
                     <p id="gin-btn">GIN</p>
                 </div>
             </div>
 
-            <div id="users">
-            </div>
+            <div id="users-deck-section"></div>
+
         </div>
+
     </div>
 </body>
-</html>
